@@ -10,8 +10,6 @@ public class MainMenu : MonoBehaviour
     {
         // Load game map
         SceneManager.LoadScene(1);
-
-
     }
 
     public void ExitGame()
