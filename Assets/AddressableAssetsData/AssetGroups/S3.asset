@@ -1,0 +1,39 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: S3
+  m_EditorClassIdentifier: 
+  m_GroupName: S3
+  m_Data:
+    m_SerializedData: []
+  m_GUID: edac9dcdb257b394da53b3895db935cc
+  m_SerializeEntries:
+  - m_GUID: 4b52c7c41e328b045a90840cb0e90c86
+    m_Address: Assets/Images/Items/Puppy.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - CloudTest
+    m_mainAssetType: UnityEngine.Texture2D, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  - m_GUID: 5969bbe0cea902b40806087f0c696166
+    m_Address: https://cabrennan-unitytests.s3.amazonaws.com/Scisssors.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - CloudTest
+    m_mainAssetType: UnityEngine.Texture2D, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: e92e6216048a6ed48903f6dd1ba91197, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: 730c4878e216936439a4da9cd2d62d55, type: 2}
+    - {fileID: 11400000, guid: e4f0a016577144240b54c553311c7f00, type: 2}
