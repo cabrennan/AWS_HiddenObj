@@ -28,7 +28,7 @@ public class BoardManager : MonoBehaviour {
 	public static BoardManager instance;
 	public List<Sprite> characters = new List<Sprite>();
 
-    public List<GameObject> prefabs = new List<GameObject>();
+    //public List<GameObject> prefabs = new List<GameObject>();
 
 
     public GameObject tile;
@@ -40,13 +40,8 @@ public class BoardManager : MonoBehaviour {
 
 	void Start () {
 		instance = GetComponent<BoardManager>();
-        //GetCharacters;
-        for (int i = 0; i < prefabs.Count; i++)
-        {
-            Debug.Log("I is: " + i);
-            Sprite sprite = prefabs[i].GetComponent<SpriteRenderer>().sprite;
-            characters[i] = sprite;
-        }
+        // GetCharacters;
+
         Vector2 offset = tile.GetComponent<SpriteRenderer>().bounds.size;
         CreateBoard(offset.x, offset.y);
     }
