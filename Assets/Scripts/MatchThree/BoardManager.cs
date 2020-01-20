@@ -28,9 +28,6 @@ public class BoardManager : MonoBehaviour {
 	public static BoardManager instance;
 	public List<Sprite> characters = new List<Sprite>();
 
-    //public List<GameObject> prefabs = new List<GameObject>();
-
-
     public GameObject tile;
 	public int xSize, ySize;
 
@@ -40,18 +37,62 @@ public class BoardManager : MonoBehaviour {
 
 	void Start () {
 		instance = GetComponent<BoardManager>();
-        // GetCharacters;
-
         Vector2 offset = tile.GetComponent<SpriteRenderer>().bounds.size;
         CreateBoard(offset.x, offset.y);
     }
 
-    private void GetCharacters(List<GameObject> prefabs)
+    private void CreateBoard(float xOffset, float yOffset)
     {
-       
+        tiles = new GameObject[xSize, ySize];
+        float startX = transform.position.x;
+        float startY = transform.position.y;
+        Sprite xCheck = null;
+        Sprite yCheck = null;
+
+
+        // Start in bottom left (0,0) and move right, then up
+        for (int y = 0; y < ySize; y++)
+        {
+            for (int x = 0; x < xSize; x++)
+            {
+                //Debug.Log("Working on Location: [" + x + ", " + y + "]");
+                GameObject newTile = Instantiate(tile, new Vector3(startX + (xOffset * x),
+                    startY + (yOffset * y), 0), tile.transform.rotation);
+                tiles[x, y] = newTile;
+                newTile.transform.parent = transform;
+                List<Sprite> possibleChar = new List<Sprite>();
+                possibleChar.AddRange(characters);
+
+
+                if (x >= 2)
+                {
+                    xCheck = tiles[x - 1, y].GetComponent<SpriteRenderer>().sprite;
+                    if (xCheck == tiles[x - 2, y].GetComponent<SpriteRenderer>().sprite)
+                    {
+                       //Debug.Log("Remove x from: [ " + x + ", " + y + "]");
+                        possibleChar.Remove(xCheck);
+                    }
+                }
+
+                if (y >= 2)
+                {
+                    yCheck = tiles[x, y-1].GetComponent<SpriteRenderer>().sprite;
+                    if (yCheck == tiles[x, y-2].GetComponent<SpriteRenderer>().sprite)
+                    {
+                        //Debug.Log("Remove x from: [ " + x + ", " + y + "]");
+                        possibleChar.Remove(yCheck);
+                    }
+                }
+
+                Sprite newSprite = possibleChar[Random.Range(0, possibleChar.Count)];
+                newTile.GetComponent<SpriteRenderer>().sprite = newSprite;
+
+            }
+        }
     }
 
-	private void CreateBoard (float xOffset, float yOffset) {
+
+    private void OrigCreateBoard (float xOffset, float yOffset) {
 		tiles = new GameObject[xSize, ySize];
         
         float startX = transform.position.x;
@@ -63,18 +104,16 @@ public class BoardManager : MonoBehaviour {
 
 		for (int x = 0; x < xSize; x++) {
 			for (int y = 0; y < ySize; y++) {
-				GameObject newTile = Instantiate(tile, new Vector3(startX + (xOffset * x), startY + (yOffset * y), 0), tile.transform.rotation);
+				GameObject newTile = Instantiate(tile, new Vector3(startX + (xOffset * x), 
+                    startY + (yOffset * y), 0), tile.transform.rotation);
 				tiles[x, y] = newTile;
                 newTile.transform.parent = transform;
 
                 List<Sprite> possibleChar= new List<Sprite>();
-
                 possibleChar.AddRange(characters);
-
                 possibleChar.Remove(prevLeft[y]);
                 possibleChar.Remove(prevBelow);
                 Sprite newSprite = possibleChar[Random.Range(0, possibleChar.Count)];
-                
                 newTile.GetComponent<SpriteRenderer>().sprite = newSprite;
                 prevLeft[y] = newSprite;
                 prevBelow = newSprite;
@@ -85,15 +124,20 @@ public class BoardManager : MonoBehaviour {
 
     public IEnumerator FindNullTiles()
     {
+        
         for (int x=0; x<xSize; x++)
         {
             for(int y=0; y<ySize; y++)
             {
-                Debug.Log("X is: " + x + " Y is: " + y);
+                Debug.Log("Inside Find Null Tiles: X is: " + x + " Y is: " + y);
                 if(tiles[x,y].GetComponent<SpriteRenderer>().sprite == null)
                 {
+                    Debug.Log("null sprite located");
                     yield return StartCoroutine(ShiftTilesDown(x, y));
                     break;
+                } else
+                {
+                    Debug.Log("sprite is not null");
                 }
             }
         }
@@ -109,6 +153,7 @@ public class BoardManager : MonoBehaviour {
 
     private IEnumerator ShiftTilesDown(int x, int yStart, float shiftDelay = 0.03f)
     {
+        Debug.Log("Inside ShiftTilesDown, x: " + x + " ystart: " + yStart);
         IsShifting = true;
         List<SpriteRenderer> renders = new List<SpriteRenderer>();
         int nullCount = 0;
@@ -118,6 +163,7 @@ public class BoardManager : MonoBehaviour {
             SpriteRenderer render = tiles[x, y].GetComponent<SpriteRenderer>();
             if (render.sprite == null)
             {
+                Debug.Log("Incrementing null count at x: " + x + " y: " + y);
                 nullCount++;
             }
             renders.Add(render);
